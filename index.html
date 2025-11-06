@@ -72,17 +72,79 @@
       flex-direction: column;
       align-items: center;
       margin-bottom: 20px;
+      position: relative;
     }
+    
+    /* Botón de audio con icono de megáfono */
+    .audio-button {
+      position: absolute;
+      top: -15px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background-color: #2196F3;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+      transition: all 0.3s ease;
+      z-index: 10;
+    }
+    
+    .audio-button:hover {
+      background-color: #1976D2;
+      transform: translateX(-50%) scale(1.1);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    }
+    
+    .audio-button:active {
+      transform: translateX(-50%) scale(0.95);
+    }
+    
+    .audio-button.playing {
+      background-color: #4CAF50;
+      animation: pulse 1s infinite;
+    }
+    
+    @keyframes pulse {
+      0% {
+        box-shadow: 0 2px 8px rgba(76, 175, 80, 0.4);
+      }
+      50% {
+        box-shadow: 0 2px 16px rgba(76, 175, 80, 0.6);
+      }
+      100% {
+        box-shadow: 0 2px 8px rgba(76, 175, 80, 0.4);
+      }
+    }
+    
+    /* Icono de megáfono SVG */
+    .speaker-icon {
+      width: 24px;
+      height: 24px;
+      fill: white;
+    }
+    
     #character-target-div {
       border: 1px solid #ccc;
       background-color: white;
-      margin: 20px 0 10px 0;
+      margin: 45px 0 10px 0;
       width: 150px;
       height: 150px;
     }
+    .control-buttons {
+      display: flex;
+      gap: 10px;
+      margin-top: 10px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
     .replay-button {
       padding: 8px 16px;
-      background-color: #FF9800;
       color: white;
       border: none;
       border-radius: 5px;
@@ -91,8 +153,8 @@
       display: flex;
       align-items: center;
       gap: 5px;
-      margin: 0 auto;
       transition: background-color 0.3s;
+      background-color: #FF9800;
     }
     .replay-button:hover {
       background-color: #F57C00;
@@ -264,7 +326,17 @@
       #character-target-div {
         width: 120px !important;
         height: 120px !important;
-        margin: 15px 0 10px 0;
+        margin: 45px 0 10px 0;
+      }
+      
+      .audio-button {
+        width: 40px;
+        height: 40px;
+      }
+      
+      .speaker-icon {
+        width: 20px;
+        height: 20px;
       }
       
       .replay-button {
@@ -329,6 +401,16 @@
         height: 100px !important;
       }
       
+      .audio-button {
+        width: 35px;
+        height: 35px;
+      }
+      
+      .speaker-icon {
+        width: 18px;
+        height: 18px;
+      }
+      
       .replay-button {
         font-size: 12px;
         padding: 5px 10px;
@@ -388,6 +470,16 @@
         height: 100px !important;
       }
       
+      .audio-button {
+        width: 35px;
+        height: 35px;
+      }
+      
+      .speaker-icon {
+        width: 18px;
+        height: 18px;
+      }
+      
       .replay-button {
         font-size: 12px;
         padding: 5px 10px;
@@ -425,6 +517,7 @@
       <div id="current-word"></div>
       
       <div class="character-display-section">
+        
         <div id="character-target-div"></div>
         <button class="replay-button" onclick="replayAnimation()">
           ↻ Repetir animación
@@ -454,30 +547,31 @@
     </div>
   </div>
 
+
   <script>
 const characters = [
-  { char: '教', pinyin: 'jiào', spanish: 'enseñar' },
-  { char: '言', pinyin: 'yán', spanish: 'palabra' },
-  { char: '他', pinyin: 'tā', spanish: 'él' },
-  { char: '她', pinyin: 'tā', spanish: 'ella' },
-  { char: '文', pinyin: 'wén', spanish: 'lengua/escritura' },
-  { char: '时', pinyin: 'shí', spanish: 'tiempo' },
-  { char: '间', pinyin: 'jiān', spanish: 'espacio/intervalo' },
-  { char: '问', pinyin: 'wèn', spanish: 'preguntar' },
-  { char: '题', pinyin: 'tí', spanish: 'tema/pregunta' },
-  { char: '忙', pinyin: 'máng', spanish: 'ocupado' },
-  { char: '会', pinyin: 'huì', spanish: 'saber (habilidad)' },
-  { char: '说', pinyin: 'shuō', spanish: 'hablar/decir' },
-  { char: '专', pinyin: 'zhuān', spanish: 'especializado' },
-  { char: '业', pinyin: 'yè', spanish: 'trabajo/industria' },
-  { char: '毕', pinyin: 'bì', spanish: 'terminar' }
+  { char: '言', pinyin: 'yán', spanish: 'palabra', audioId: 'audio-yan' },
+  { char: '语', pinyin: 'yǔ', spanish: 'idioma', audioId: 'audio-yu' },
+  { char: '文', pinyin: 'wén', spanish: 'lengua/escritura', audioId: 'audio-wen' },
+  { char: '时', pinyin: 'shí', spanish: 'tiempo', audioId: 'audio-shi' },
+  { char: '间', pinyin: 'jiān', spanish: 'espacio/intervalo', audioId: 'audio-jian' },
+  { char: '问', pinyin: 'wèn', spanish: 'preguntar', audioId: 'audio-wen4' },
+  { char: '题', pinyin: 'tí', spanish: 'tema/pregunta', audioId: 'audio-ti' },
+  { char: '会', pinyin: 'huì', spanish: 'saber (habilidad)', audioId: 'audio-hui' },
+  { char: '说', pinyin: 'shuō', spanish: 'hablar/decir', audioId: 'audio-shuo' },
+  { char: '专', pinyin: 'zhuān', spanish: 'especializado', audioId: 'audio-zhuan' },
+  { char: '业', pinyin: 'yè', spanish: 'trabajo/industria', audioId: 'audio-ye' },
+  { char: '毕', pinyin: 'bì', spanish: 'terminar', audioId: 'audio-bi' }
 ];
+
+
     let currentIndex = 0;
     let writer = null;
     let isDrawing = false;
     let showGuide = true;
     let lastX = 0;
     let lastY = 0;
+    let currentAudio = null;
 
     // Canvas setup
     const canvas = document.getElementById('character-canvas');
@@ -493,6 +587,39 @@ const characters = [
       strokeValueDisplay.textContent = e.target.value;
     });
     ctx.lineWidth = strokeWidthInput.value;
+
+    // Audio functions
+    function playAudio() {
+      const audioButton = document.getElementById('audio-button');
+      const character = characters[currentIndex];
+      
+      // Por ahora, reproducimos un sonido de muestra
+      // En producción, cada carácter debería tener su propio archivo de audio
+      if (character.audioId) {
+        const audio = document.getElementById(character.audioId);
+        if (audio) {
+          audioButton.classList.add('playing');
+          audio.play();
+          audio.onended = () => {
+            audioButton.classList.remove('playing');
+          };
+        } else {
+          // Si no hay audio específico, usar un audio genérico de muestra
+          console.log(`Reproduciendo pronunciación de: ${character.pinyin}`);
+          audioButton.classList.add('playing');
+          setTimeout(() => {
+            audioButton.classList.remove('playing');
+          }, 1000);
+        }
+      } else {
+        // Simulación de reproducción si no hay audio
+        console.log(`Reproduciendo pronunciación de: ${character.pinyin}`);
+        audioButton.classList.add('playing');
+        setTimeout(() => {
+          audioButton.classList.remove('playing');
+        }, 1000);
+      }
+    }
 
     // Drawing functions
     function startDrawing(e) {
