@@ -959,13 +959,13 @@
       <div id="current-word"></div>
       
       <div class="character-display-section">
-        <!-- <button class="audio-button" id="audio-button" onclick="playAudio()">
+        <button class="audio-button" id="audio-button" onclick="playAudio()">
             🔊 
           </button>
         <div id="character-target-div"></div>
         <button class="replay-button" onclick="replayAnimation()">
           ↻ Repetir animación
-        </button> -->
+        </button>
       </div>
 
       <div class="practice-section">
@@ -988,7 +988,7 @@
         <button id="prev-button">← Anterior</button>
         <button id="next-button">Siguiente →</button>
       </div>
-       <!-- <div class="attribution">
+       <div class="attribution">
           Audios provided by 
           <a href="https://es.linkedin.com/in/raquel-cubas-godoy-0427b71ba" 
             target="_blank" 
@@ -996,7 +996,7 @@
             Professor Raquel Cubas
           </a> 
           from ULPGC.
-        </div> -->
+        </div>
     </div>
   </div>
 
@@ -1046,8 +1046,7 @@ const characters = [
       const audioButton = document.getElementById('audio-button');
       const character = characters[currentIndex];
       
-      // Por ahora, reproducimos un sonido de muestra
-      // En producción, cada carácter debería tener su propio archivo de audio
+      
       if (character.audioId) {
         const audio = document.getElementById(character.audioId);
         if (audio) {
@@ -1057,7 +1056,6 @@ const characters = [
             audioButton.classList.remove('playing');
           };
         } else {
-          // Si no hay audio específico, usar un audio genérico de muestra
           console.log(`Reproduciendo pronunciación de: ${character.pinyin}`);
           audioButton.classList.add('playing');
           setTimeout(() => {
@@ -1065,7 +1063,6 @@ const characters = [
           }, 1000);
         }
       } else {
-        // Simulación de reproducción si no hay audio
         console.log(`Reproduciendo pronunciación de: ${character.pinyin}`);
         audioButton.classList.add('playing');
         setTimeout(() => {
@@ -1074,7 +1071,6 @@ const characters = [
       }
     }
 
-    // Drawing functions
     function startDrawing(e) {
       isDrawing = true;
       const rect = canvas.getBoundingClientRect();
@@ -1108,13 +1104,11 @@ const characters = [
       isDrawing = false;
     }
 
-    // Mouse events
     canvas.addEventListener('mousedown', startDrawing);
     canvas.addEventListener('mousemove', draw);
     canvas.addEventListener('mouseup', stopDrawing);
     canvas.addEventListener('mouseout', stopDrawing);
 
-    // Touch events for mobile
     canvas.addEventListener('touchstart', (e) => {
       e.preventDefault();
       startDrawing(e);
@@ -1158,7 +1152,6 @@ const characters = [
       sidebar.classList.toggle('show');
     }
 
-    // Function to replay the character animation
     function replayAnimation() {
       if (writer) {
         writer.animateCharacter();
@@ -1174,10 +1167,8 @@ const characters = [
       currentIndex = index;
       const item = characters[index];
 
-      // Update current word display
       document.getElementById('current-word').textContent = `${item.char} (${item.pinyin}) - ${item.spanish}`;
 
-      // Update HanziWriter display
       const targetDiv = document.getElementById('character-target-div');
       targetDiv.innerHTML = '';
 
@@ -1194,10 +1185,8 @@ const characters = [
       });
       writer.animateCharacter();
 
-      // Clear and update canvas
       clearCanvas();
 
-      // Update active button in sidebar
       const buttons = document.querySelectorAll('.sidebar button');
       buttons.forEach((btn, i) => {
         if (i === index) {
@@ -1207,7 +1196,6 @@ const characters = [
         }
       });
 
-      // Close mobile menu after selection on small screens
       if (window.innerWidth <= 600) {
         const sidebar = document.getElementById('sidebar');
         sidebar.classList.remove('show');
@@ -1226,11 +1214,9 @@ const characters = [
       });
     }
 
-    // Initialize
     generateMenu();
     showCharacter(currentIndex);
 
-    // Navigation buttons
     document.getElementById('prev-button').addEventListener('click', () => {
       showCharacter(currentIndex - 1);
     });
@@ -1239,7 +1225,6 @@ const characters = [
       showCharacter(currentIndex + 1);
     });
 
-    // Handle window resize
     let resizeTimeout;
     window.addEventListener('resize', () => {
       clearTimeout(resizeTimeout);
@@ -1248,7 +1233,6 @@ const characters = [
       }, 250);
     });
 
-        // Play Audio function
     function playAudio() {
             const audioId = characters[currentIndex].audioId;
             const audio = document.getElementById(audioId);
